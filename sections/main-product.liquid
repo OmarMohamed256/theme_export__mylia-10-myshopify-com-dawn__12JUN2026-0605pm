@@ -477,6 +477,20 @@
 
               {%- when 'variant_picker' -%}
                 {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+              {%- when 'product_note' -%}
+                <div class="product-note__wrapper" {{ block.shopify_attributes }}>
+                  <label class="product-note__label form__label" for="ProductNote-{{ section.id }}">
+                    {{ block.settings.label | default: 'Add a note' }}
+                  </label>
+                  <textarea
+                    id="ProductNote-{{ section.id }}"
+                    class="product-note__input field__input"
+                    name="properties[Note]"
+                    form="{{ product_form_id }}"
+                    rows="{{ block.settings.rows | default: 3 }}"
+                    placeholder="{{ block.settings.placeholder | default: 'Any special requests or notes for this item…' }}"
+                  ></textarea>
+                </div>
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
@@ -675,6 +689,39 @@
               {%- when 'icon-with-text' -%}
                 {% render 'icon-with-text', block: block %}
             {%- endcase -%}
+            {%- comment -%} Inject product note styles once when the block is present {%- endcomment -%}
+            {%- if block.type == 'product_note' -%}
+              <style>
+                .product-note__wrapper {
+                  margin-bottom: 1.6rem;
+                }
+                .product-note__label {
+                  display: block;
+                  margin-bottom: 0.6rem;
+                  font-size: 1.4rem;
+                  font-weight: 500;
+                }
+                .product-note__input {
+                  width: 100%;
+                  resize: vertical;
+                  min-height: 8rem;
+                  padding: 1rem 1.2rem;
+                  font-size: 1.4rem;
+                  line-height: 1.5;
+                  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+                  background: transparent;
+                  color: rgb(var(--color-foreground));
+                  font-family: inherit;
+                  border-radius: var(--inputs-radius, 0);
+                  transition: border-color 0.2s;
+                  box-sizing: border-box;
+                }
+                .product-note__input:focus {
+                  outline: none;
+                  border-color: rgba(var(--color-foreground), 0.6);
+                }
+              </style>
+            {%- endif -%}
           {%- endfor -%}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
             {{ 'products.product.view_full_details' | t }}
@@ -2084,6 +2131,34 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "product_note",
+      "name": "Product Note",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field label",
+          "default": "Add a note"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder text",
+          "default": "Any special requests or notes for this item…"
+        },
+        {
+          "type": "range",
+          "id": "rows",
+          "min": 2,
+          "max": 8,
+          "step": 1,
+          "label": "Textarea rows",
+          "default": 3
         }
       ]
     }

@@ -22,6 +22,17 @@
     margin-left: -1.2rem;
   }
 
+  .header-wrapper {
+    transition: background 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .header-wrapper:not(.header-scrolled) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom-color: transparent !important;
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
@@ -311,6 +322,29 @@
     desktop_menu_type: section.settings.menu_type_desktop
   -%}
 {%- endif -%}
+
+<script>
+  (function () {
+    function initTransparentHeader() {
+      var headerWrapper = document.querySelector('.header-wrapper');
+      if (!headerWrapper) return;
+      function update() {
+        if (window.scrollY > 10) {
+          headerWrapper.classList.add('header-scrolled');
+        } else {
+          headerWrapper.classList.remove('header-scrolled');
+        }
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTransparentHeader);
+    } else {
+      initTransparentHeader();
+    }
+  })();
+</script>
 
 {% javascript %}
   class StickyHeader extends HTMLElement {
