@@ -1,27 +1,33 @@
 {%- liquid
   assign size_chart_raw = product.metafields.custom.size_chart.value
   assign unit           = section.settings.unit_label | default: 'kg'
-  assign c1             = section.settings.col_1
-  assign c2             = section.settings.col_2
-  assign c3             = section.settings.col_3
-  assign c4             = section.settings.col_4
-  assign c5             = section.settings.col_5
-  assign c6             = section.settings.col_6
 -%}
 
 {%- if size_chart_raw != blank -%}
 
 {%- comment -%}
-  Metafield format (multi_line_text_field):
-    Each line = one measurement row.
-    Values separated by  |
-    Example:
-      Waist  | 34 | 36 | 38
-      Hip    | 51 | 53 | 55.5
-      Length | 107 | 108 | 109
+  Metafield format — paste a plain table, first line = column headers:
+
+    Area   | XS  | S   | M    | L    | XL
+    Waist  | 60  | 65  | 70   | 75   | 80
+    Hip    | 84  | 88  | 92   | 96   | 100
+    Length | 95  | 96  | 97   | 98   | 99
+
+  First line is parsed as the header row automatically.
+  Any number of columns is supported — no customizer setup required.
 {%- endcomment -%}
 
-{%- assign chart_lines = size_chart_raw | strip | newline_to_br | split: '<br />' -%}
+{%- assign all_lines = size_chart_raw | strip | newline_to_br | split: '<br />' -%}
+
+{%- comment -%} Pull the first non-blank line as the header {%- endcomment -%}
+{%- assign header_line = '' -%}
+{%- for line in all_lines -%}
+  {%- assign lc = line | strip | strip_html -%}
+  {%- if lc != blank and header_line == '' -%}
+    {%- assign header_line = lc -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign headers = header_line | split: '|' -%}
 
 <div class="mylia-size-chart section-{{ section.id }}-padding">
   <div class="mylia-size-chart__inner page-width">
@@ -61,47 +67,42 @@
           <table class="mylia-size-chart__table" role="table">
             <thead>
               <tr>
-                <th scope="col"></th>
-                {%- if c1 != blank -%}<th scope="col">{{ c1 }}</th>{%- endif -%}
-                {%- if c2 != blank -%}<th scope="col">{{ c2 }}</th>{%- endif -%}
-                {%- if c3 != blank -%}<th scope="col">{{ c3 }}</th>{%- endif -%}
-                {%- if c4 != blank -%}<th scope="col">{{ c4 }}</th>{%- endif -%}
-                {%- if c5 != blank -%}<th scope="col">{{ c5 }}</th>{%- endif -%}
-                {%- if c6 != blank -%}<th scope="col">{{ c6 }}</th>{%- endif -%}
+                {%- for h in headers -%}
+                  {%- assign hv = h | strip -%}
+                  {%- if forloop.first -%}
+                    <th scope="col" class="mylia-size-chart__row-header-label">{{ hv }}</th>
+                  {%- else -%}
+                    <th scope="col">{{ hv }}</th>
+                  {%- endif -%}
+                {%- endfor -%}
               </tr>
             </thead>
             <tbody>
-              {%- for line in chart_lines -%}
-                {%- assign line = line | strip | strip_html -%}
-                {%- if line != blank -%}
-                  {%- assign cells = line | split: '|' -%}
-                  <tr>
-                    <th scope="row">{{ cells[0] | strip }}</th>
-                    {%- if c1 != blank -%}
-                      {%- assign v = cells[1] | strip -%}
-                      <td>{{ v }}{%- if v != blank -%}<span class="mylia-size-chart__unit"> {{ unit }}</span>{%- endif -%}</td>
-                    {%- endif -%}
-                    {%- if c2 != blank -%}
-                      {%- assign v = cells[2] | strip -%}
-                      <td>{{ v }}{%- if v != blank -%}<span class="mylia-size-chart__unit"> {{ unit }}</span>{%- endif -%}</td>
-                    {%- endif -%}
-                    {%- if c3 != blank -%}
-                      {%- assign v = cells[3] | strip -%}
-                      <td>{{ v }}{%- if v != blank -%}<span class="mylia-size-chart__unit"> {{ unit }}</span>{%- endif -%}</td>
-                    {%- endif -%}
-                    {%- if c4 != blank -%}
-                      {%- assign v = cells[4] | strip -%}
-                      <td>{{ v }}{%- if v != blank -%}<span class="mylia-size-chart__unit"> {{ unit }}</span>{%- endif -%}</td>
-                    {%- endif -%}
-                    {%- if c5 != blank -%}
-                      {%- assign v = cells[5] | strip -%}
-                      <td>{{ v }}{%- if v != blank -%}<span class="mylia-size-chart__unit"> {{ unit }}</span>{%- endif -%}</td>
-                    {%- endif -%}
-                    {%- if c6 != blank -%}
-                      {%- assign v = cells[6] | strip -%}
-                      <td>{{ v }}{%- if v != blank -%}<span class="mylia-size-chart__unit"> {{ unit }}</span>{%- endif -%}</td>
-                    {%- endif -%}
-                  </tr>
+              {%- assign first_done = false -%}
+              {%- for line in all_lines -%}
+                {%- assign lc = line | strip | strip_html -%}
+                {%- if lc != blank -%}
+                  {%- if first_done == false -%}
+                    {%- comment -%} Skip the header line {%- endcomment -%}
+                    {%- assign first_done = true -%}
+                  {%- else -%}
+                    {%- assign cells = lc | split: '|' -%}
+                    <tr>
+                      {%- for cell in cells -%}
+                        {%- assign cv = cell | strip -%}
+                        {%- if forloop.first -%}
+                          <th scope="row">{{ cv }}</th>
+                        {%- else -%}
+                          <td>
+                            {{- cv -}}
+                            {%- if cv != blank and unit != blank -%}
+                              <span class="mylia-size-chart__unit"> {{ unit }}</span>
+                            {%- endif -%}
+                          </td>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </tr>
+                  {%- endif -%}
                 {%- endif -%}
               {%- endfor -%}
             </tbody>
@@ -187,7 +188,7 @@
     color: #ffffff;
     padding: 4rem 3rem;
     width: 100%;
-    max-width: 76rem;
+    max-width: 80rem;
     margin: 0 auto;
     box-sizing: border-box;
   }
@@ -232,7 +233,6 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 1.4rem;
-    min-width: 28rem;
   }
 
   .mylia-size-chart__table thead th {
@@ -248,9 +248,13 @@
     white-space: nowrap;
   }
 
-  .mylia-size-chart__table thead th:first-child {
+  .mylia-size-chart__table thead .mylia-size-chart__row-header-label {
     background-color: transparent;
     border-color: transparent;
+    color: rgba(255,255,255,0.4);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
   .mylia-size-chart__table tbody th,
@@ -316,7 +320,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Add the size chart data to each product via Shopify Admin → Products → [product] → Metafields → custom.size_chart. One row per line, values separated by | e.g.: Waist | 34 | 36 | 38"
+      "content": "Size chart data lives on each product: Shopify Admin → Products → [product] → Metafields → custom.size_chart. Paste a plain table — the first line is the header row, one row per line, values separated by |"
     },
     {
       "type": "text",
@@ -325,56 +329,11 @@
       "default": "Size Chart"
     },
     {
-      "type": "header",
-      "content": "Size columns"
-    },
-    {
-      "type": "paragraph",
-      "content": "Column headers shown across the top. Leave a field blank to hide that column."
-    },
-    {
-      "type": "text",
-      "id": "col_1",
-      "label": "Column 1",
-      "default": "SMALL"
-    },
-    {
-      "type": "text",
-      "id": "col_2",
-      "label": "Column 2",
-      "default": "MEDIUM"
-    },
-    {
-      "type": "text",
-      "id": "col_3",
-      "label": "Column 3",
-      "default": "LARGE"
-    },
-    {
-      "type": "text",
-      "id": "col_4",
-      "label": "Column 4 (optional)"
-    },
-    {
-      "type": "text",
-      "id": "col_5",
-      "label": "Column 5 (optional)"
-    },
-    {
-      "type": "text",
-      "id": "col_6",
-      "label": "Column 6 (optional)"
-    },
-    {
-      "type": "header",
-      "content": "Options"
-    },
-    {
       "type": "text",
       "id": "unit_label",
       "label": "Unit label",
       "default": "kg",
-      "info": "Shown after each value. Leave blank to hide."
+      "info": "Appended after each value. Leave blank to show no unit."
     },
     {
       "type": "checkbox",
