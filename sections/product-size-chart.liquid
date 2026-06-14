@@ -1,6 +1,15 @@
-{%- assign size_chart = product.metafields.custom.size_chart.value -%}
+{%- if section.blocks.size > 0 -%}
 
-{%- if size_chart != blank -%}
+{%- assign unit = section.settings.unit_label | default: 'kg' -%}
+
+{%- comment -%} Collect which columns are active (non-blank header) {%- endcomment -%}
+{%- assign c1 = section.settings.col_1 -%}
+{%- assign c2 = section.settings.col_2 -%}
+{%- assign c3 = section.settings.col_3 -%}
+{%- assign c4 = section.settings.col_4 -%}
+{%- assign c5 = section.settings.col_5 -%}
+{%- assign c6 = section.settings.col_6 -%}
+
 <div class="mylia-size-chart section-{{ section.id }}-padding">
   <div class="mylia-size-chart__inner page-width">
 
@@ -14,8 +23,10 @@
         <span class="mylia-size-chart__trigger-icon">
           {{- 'icon-ruler.svg' | inline_asset_content -}}
         </span>
-        {{ section.settings.trigger_label | default: 'Size Chart' }}
-        <span class="mylia-size-chart__trigger-caret">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+        {{- section.settings.trigger_label | default: 'Size Chart' -}}
+        <span class="mylia-size-chart__trigger-caret">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
       </button>
     {%- endif -%}
 
@@ -24,38 +35,90 @@
       class="mylia-size-chart__panel{% if section.settings.show_trigger %} mylia-size-chart__panel--collapsible{% endif %}"
     >
       <div class="mylia-size-chart__card">
+
         <div class="mylia-size-chart__header">
           <span class="mylia-size-chart__ornament" aria-hidden="true">&#10022;</span>
           <h2 class="mylia-size-chart__title">{{ section.settings.heading | default: 'Size Chart' }}</h2>
           <span class="mylia-size-chart__divider" aria-hidden="true"></span>
         </div>
 
-        {%- assign unit_label = section.settings.unit_label | default: 'kg' -%}
-
-        <table class="mylia-size-chart__table" role="table">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              {%- for header in size_chart.headers -%}
-                <th scope="col">{{ header }}</th>
-              {%- endfor -%}
-            </tr>
-          </thead>
-          <tbody>
-            {%- for row in size_chart.rows -%}
+        <div class="mylia-size-chart__table-wrap">
+          <table class="mylia-size-chart__table" role="table">
+            <thead>
               <tr>
-                <th scope="row">{{ row.label }}</th>
-                {%- for val in row.values -%}
-                  <td>{{ val }} <span class="mylia-size-chart__unit">{{ unit_label }}</span></td>
-                {%- endfor -%}
+                <th scope="col"></th>
+                {%- if c1 != blank -%}<th scope="col">{{ c1 }}</th>{%- endif -%}
+                {%- if c2 != blank -%}<th scope="col">{{ c2 }}</th>{%- endif -%}
+                {%- if c3 != blank -%}<th scope="col">{{ c3 }}</th>{%- endif -%}
+                {%- if c4 != blank -%}<th scope="col">{{ c4 }}</th>{%- endif -%}
+                {%- if c5 != blank -%}<th scope="col">{{ c5 }}</th>{%- endif -%}
+                {%- if c6 != blank -%}<th scope="col">{{ c6 }}</th>{%- endif -%}
               </tr>
-            {%- endfor -%}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'row' -%}
+                  <tr {{ block.shopify_attributes }}>
+                    <th scope="row">{{ block.settings.label }}</th>
+                    {%- if c1 != blank -%}
+                      <td>
+                        {{- block.settings.val_1 -}}
+                        {%- if block.settings.val_1 != blank -%}
+                          <span class="mylia-size-chart__unit">{{ unit }}</span>
+                        {%- endif -%}
+                      </td>
+                    {%- endif -%}
+                    {%- if c2 != blank -%}
+                      <td>
+                        {{- block.settings.val_2 -}}
+                        {%- if block.settings.val_2 != blank -%}
+                          <span class="mylia-size-chart__unit">{{ unit }}</span>
+                        {%- endif -%}
+                      </td>
+                    {%- endif -%}
+                    {%- if c3 != blank -%}
+                      <td>
+                        {{- block.settings.val_3 -}}
+                        {%- if block.settings.val_3 != blank -%}
+                          <span class="mylia-size-chart__unit">{{ unit }}</span>
+                        {%- endif -%}
+                      </td>
+                    {%- endif -%}
+                    {%- if c4 != blank -%}
+                      <td>
+                        {{- block.settings.val_4 -}}
+                        {%- if block.settings.val_4 != blank -%}
+                          <span class="mylia-size-chart__unit">{{ unit }}</span>
+                        {%- endif -%}
+                      </td>
+                    {%- endif -%}
+                    {%- if c5 != blank -%}
+                      <td>
+                        {{- block.settings.val_5 -}}
+                        {%- if block.settings.val_5 != blank -%}
+                          <span class="mylia-size-chart__unit">{{ unit }}</span>
+                        {%- endif -%}
+                      </td>
+                    {%- endif -%}
+                    {%- if c6 != blank -%}
+                      <td>
+                        {{- block.settings.val_6 -}}
+                        {%- if block.settings.val_6 != blank -%}
+                          <span class="mylia-size-chart__unit">{{ unit }}</span>
+                        {%- endif -%}
+                      </td>
+                    {%- endif -%}
+                  </tr>
+                {%- endif -%}
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
 
         {%- if section.settings.note != blank -%}
           <p class="mylia-size-chart__note">{{ section.settings.note }}</p>
         {%- endif -%}
+
       </div>
     </div>
 
@@ -98,9 +161,7 @@
     transition: opacity 0.2s;
   }
 
-  .mylia-size-chart__trigger:hover {
-    opacity: 0.7;
-  }
+  .mylia-size-chart__trigger:hover { opacity: 0.7; }
 
   .mylia-size-chart__trigger-icon svg,
   .mylia-size-chart__trigger-caret svg {
@@ -137,9 +198,9 @@
     color: #ffffff;
     padding: 4rem 3rem;
     width: 100%;
-    max-width: 72rem;
+    max-width: 76rem;
     margin: 0 auto;
-    font-family: var(--font-heading-family, Georgia, serif);
+    box-sizing: border-box;
   }
 
   .mylia-size-chart__header {
@@ -150,7 +211,7 @@
   .mylia-size-chart__ornament {
     display: block;
     font-size: 1.4rem;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.45);
     margin-bottom: 0.8rem;
     letter-spacing: 0.4em;
   }
@@ -162,55 +223,65 @@
     text-transform: uppercase;
     color: #ffffff;
     margin: 0 0 1.2rem;
+    font-family: var(--font-heading-family, Georgia, serif);
   }
 
   .mylia-size-chart__divider {
     display: block;
     width: 4rem;
     height: 0.1rem;
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.3);
     margin: 0 auto;
+  }
+
+  /* Horizontal scroll on small screens */
+  .mylia-size-chart__table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .mylia-size-chart__table {
     width: 100%;
     border-collapse: collapse;
     font-size: 1.4rem;
+    min-width: 32rem;
   }
 
-  .mylia-size-chart__table thead tr th {
+  .mylia-size-chart__table thead th {
     background-color: #1a1a1a;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.9);
     font-weight: 400;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     font-size: 1.2rem;
-    padding: 1.2rem 1.6rem;
+    padding: 1.2rem 2rem;
     border: 0.1rem solid rgba(255,255,255,0.1);
     text-align: center;
+    white-space: nowrap;
   }
 
-  .mylia-size-chart__table thead tr th:first-child {
+  .mylia-size-chart__table thead th:first-child {
     background-color: transparent;
     border-color: transparent;
   }
 
-  .mylia-size-chart__table tbody tr th,
-  .mylia-size-chart__table tbody tr td {
-    padding: 1.2rem 1.6rem;
+  .mylia-size-chart__table tbody th,
+  .mylia-size-chart__table tbody td {
+    padding: 1.2rem 2rem;
     border: 0.1rem solid rgba(255,255,255,0.1);
     text-align: center;
   }
 
-  .mylia-size-chart__table tbody tr th {
+  .mylia-size-chart__table tbody th {
     font-weight: 600;
     color: rgba(255,255,255,0.9);
     text-align: left;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
   }
 
-  .mylia-size-chart__table tbody tr td {
-    color: rgba(255,255,255,0.75);
+  .mylia-size-chart__table tbody td {
+    color: rgba(255,255,255,0.8);
     font-weight: 600;
     font-size: 1.5rem;
   }
@@ -223,14 +294,14 @@
   .mylia-size-chart__unit {
     font-size: 1rem;
     font-weight: 400;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.4);
     margin-left: 0.2rem;
   }
 
   .mylia-size-chart__note {
-    margin-top: 2rem;
+    margin-top: 2.4rem;
     font-size: 1.2rem;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.45);
     text-align: center;
     letter-spacing: 0.05em;
     font-family: var(--font-body-family, sans-serif);
@@ -239,12 +310,10 @@
 
 <script>
   (function () {
-    var triggers = document.querySelectorAll('.mylia-size-chart__trigger');
-    triggers.forEach(function (trigger) {
-      trigger.addEventListener('click', function () {
+    document.querySelectorAll('.mylia-size-chart__trigger').forEach(function (btn) {
+      btn.addEventListener('click', function () {
         var expanded = this.getAttribute('aria-expanded') === 'true';
-        var panelId = this.getAttribute('aria-controls');
-        var panel = document.getElementById(panelId);
+        var panel = document.getElementById(this.getAttribute('aria-controls'));
         this.setAttribute('aria-expanded', String(!expanded));
         if (panel) panel.classList.toggle('is-open', !expanded);
       });
@@ -261,19 +330,70 @@
   "class": "section",
   "settings": [
     {
-      "type": "paragraph",
-      "content": "Size chart data is pulled from the product metafield **custom.size_chart** (type: JSON). Format: { \"headers\": [\"S\",\"M\",\"L\"], \"rows\": [{ \"label\": \"Waist\", \"values\": [\"34\",\"36\",\"38\"] }] }"
-    },
-    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Size Chart"
     },
     {
+      "type": "header",
+      "content": "Size columns"
+    },
+    {
+      "type": "paragraph",
+      "content": "Enter the size names for each column. Leave a field blank to hide that column."
+    },
+    {
+      "type": "text",
+      "id": "col_1",
+      "label": "Column 1",
+      "default": "SMALL"
+    },
+    {
+      "type": "text",
+      "id": "col_2",
+      "label": "Column 2",
+      "default": "MEDIUM"
+    },
+    {
+      "type": "text",
+      "id": "col_3",
+      "label": "Column 3",
+      "default": "LARGE"
+    },
+    {
+      "type": "text",
+      "id": "col_4",
+      "label": "Column 4 (optional)",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "col_5",
+      "label": "Column 5 (optional)",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "col_6",
+      "label": "Column 6 (optional)",
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Options"
+    },
+    {
+      "type": "text",
+      "id": "unit_label",
+      "label": "Unit label",
+      "default": "kg",
+      "info": "Shown after each value (e.g. kg, cm, in). Leave blank to hide."
+    },
+    {
       "type": "checkbox",
       "id": "show_trigger",
-      "label": "Show as collapsible (hidden by default)",
+      "label": "Collapsible (hidden until clicked)",
       "default": true
     },
     {
@@ -284,16 +404,13 @@
     },
     {
       "type": "text",
-      "id": "unit_label",
-      "label": "Unit label",
-      "default": "kg",
-      "info": "Shown after each measurement value (e.g. kg, cm, in)"
+      "id": "note",
+      "label": "Footer note",
+      "info": "Optional note below the table, e.g. 'All measurements are in kilograms'"
     },
     {
-      "type": "text",
-      "id": "note",
-      "label": "Note below table",
-      "info": "Optional footnote, e.g. 'All measurements are in kilograms'"
+      "type": "header",
+      "content": "Spacing"
     },
     {
       "type": "range",
@@ -316,9 +433,59 @@
       "default": 36
     }
   ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Measurement row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Measurement name",
+          "default": "Waist",
+          "info": "e.g. Waist, Hip, Length, Chest, Sleeve"
+        },
+        {
+          "type": "text",
+          "id": "val_1",
+          "label": "Value — Column 1"
+        },
+        {
+          "type": "text",
+          "id": "val_2",
+          "label": "Value — Column 2"
+        },
+        {
+          "type": "text",
+          "id": "val_3",
+          "label": "Value — Column 3"
+        },
+        {
+          "type": "text",
+          "id": "val_4",
+          "label": "Value — Column 4"
+        },
+        {
+          "type": "text",
+          "id": "val_5",
+          "label": "Value — Column 5"
+        },
+        {
+          "type": "text",
+          "id": "val_6",
+          "label": "Value — Column 6"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Size Chart"
+      "name": "Size Chart",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Waist" } },
+        { "type": "row", "settings": { "label": "Hip" } },
+        { "type": "row", "settings": { "label": "Length" } }
+      ]
     }
   ]
 }
