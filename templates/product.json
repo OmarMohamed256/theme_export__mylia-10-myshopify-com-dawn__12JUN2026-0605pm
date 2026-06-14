@@ -58,9 +58,9 @@
         "collapsible_tab_yihaTJ": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Collapsible row",
-            "icon": "check_mark",
-            "content": "",
+            "heading": "Refund & Exchange Policy",
+            "icon": "return",
+            "content": "<p>You are welcome to inspect and try your items while the courier is present. If you choose not to keep any item, you may return it on the spot and only pay the shipping fees.</p><p>Once the courier leaves, no refunds or exchanges can be processed — so please make sure to check everything before they go.</p><p>For sale items, you may still inspect your order while the courier is present, but no refunds or exchanges are allowed after they leave.</p><p>For orders of 4 or more items, a 50% deposit is required within 24 hours of placing your order to confirm it, otherwise it will be automatically canceled. Shipping and handling costs for any approved exchanges are the customer's responsibility.</p>",
             "page": ""
           }
         },
