@@ -12,15 +12,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "size_chart_hqxp3K": {
-          "type": "size_chart",
-          "settings": {
-            "trigger_label": "Size Chart",
-            "heading": "Size Chart",
-            "unit_label": "kg",
-            "note": ""
-          }
-        },
         "title": {
           "type": "title",
           "settings": {}
@@ -55,11 +46,13 @@
             "show_gift_card_recipient": true
           }
         },
-        "vendor": {
-          "type": "text",
+        "size_chart_hqxp3K": {
+          "type": "size_chart",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "trigger_label": "Size Chart",
+            "heading": "Size Chart",
+            "unit_label": "kg",
+            "note": ""
           }
         },
         "collapsible_tab_yihaTJ": {
@@ -83,14 +76,13 @@
         }
       },
       "block_order": [
-        "size_chart_hqxp3K",
         "title",
         "price",
         "variant_picker",
         "quantity_selector",
         "product_note",
         "buy_buttons",
-        "vendor",
+        "size_chart_hqxp3K",
         "collapsible_tab_yihaTJ",
         "description",
         "share"
