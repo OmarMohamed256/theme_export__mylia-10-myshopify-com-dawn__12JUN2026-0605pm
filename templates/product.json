@@ -51,7 +51,7 @@
           "settings": {
             "trigger_label": "Size Chart",
             "heading": "Size Chart",
-            "unit_label": "",
+            "unit_label": "_",
             "note": ""
           }
         },
