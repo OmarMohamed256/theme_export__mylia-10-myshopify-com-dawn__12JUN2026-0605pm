@@ -491,6 +491,293 @@
                     placeholder="{{ block.settings.placeholder | default: 'Any special requests or notes for this item…' }}"
                   ></textarea>
                 </div>
+              {%- when 'size_chart' -%}
+                {%- liquid
+                  assign sc_raw  = product.metafields.custom.size_chart.value
+                  assign sc_unit = block.settings.unit_label | default: 'kg'
+                -%}
+                {%- if sc_raw != blank -%}
+                  {%- assign sc_all_lines = sc_raw | strip | newline_to_br | split: '<br />' -%}
+                  {%- assign sc_header_line = '' -%}
+                  {%- for sc_line in sc_all_lines -%}
+                    {%- assign sc_lc = sc_line | strip | strip_html -%}
+                    {%- if sc_lc != blank and sc_header_line == '' -%}
+                      {%- assign sc_header_line = sc_lc -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- assign sc_headers = sc_header_line | split: '|' -%}
+
+                  <div class="psc-block" {{ block.shopify_attributes }}>
+                    <button
+                      class="psc-trigger"
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls="PscPanel-{{ block.id }}"
+                    >
+                      <span class="psc-trigger__label">
+                        {{- block.settings.trigger_label | default: 'Size Chart' -}}
+                      </span>
+                      <span class="psc-trigger__caret">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </span>
+                    </button>
+
+                    <div class="psc-panel" id="PscPanel-{{ block.id }}" aria-hidden="true">
+                      <div class="psc-panel__inner">
+                        <div class="psc-card">
+                          <div class="psc-card__header">
+                            {%- if settings.logo != blank -%}
+                              <div class="psc-logo">
+                                {{- settings.logo
+                                  | image_url: width: 240
+                                  | image_tag:
+                                    class: 'psc-logo__img',
+                                    alt: shop.name,
+                                    loading: 'lazy',
+                                    width: settings.logo_width,
+                                    height: settings.logo_width | divided_by: settings.logo.aspect_ratio
+                                -}}
+                              </div>
+                            {%- else -%}
+                              <p class="psc-logo-text">{{ shop.name }}</p>
+                            {%- endif -%}
+                            <span class="psc-card__ornament" aria-hidden="true">&#10022;</span>
+                            {%- if block.settings.heading != blank -%}
+                              <h3 class="psc-card__title">{{ block.settings.heading }}</h3>
+                            {%- endif -%}
+                            <span class="psc-card__divider" aria-hidden="true"></span>
+                          </div>
+
+                          <div class="psc-table-wrap">
+                            <table class="psc-table" role="table">
+                              <thead>
+                                <tr>
+                                  {%- for sc_h in sc_headers -%}
+                                    {%- assign sc_hv = sc_h | strip -%}
+                                    {%- if forloop.first -%}
+                                      <th scope="col" class="psc-table__corner">{{ sc_hv }}</th>
+                                    {%- else -%}
+                                      <th scope="col">{{ sc_hv }}</th>
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {%- assign sc_first_done = false -%}
+                                {%- for sc_line in sc_all_lines -%}
+                                  {%- assign sc_lc = sc_line | strip | strip_html -%}
+                                  {%- if sc_lc != blank -%}
+                                    {%- if sc_first_done == false -%}
+                                      {%- assign sc_first_done = true -%}
+                                    {%- else -%}
+                                      {%- assign sc_cells = sc_lc | split: '|' -%}
+                                      <tr>
+                                        {%- for sc_cell in sc_cells -%}
+                                          {%- assign sc_cv = sc_cell | strip -%}
+                                          {%- if forloop.first -%}
+                                            <th scope="row">{{ sc_cv }}</th>
+                                          {%- else -%}
+                                            <td>
+                                              {{- sc_cv -}}
+                                              {%- if sc_cv != blank and sc_unit != blank -%}
+                                                <span class="psc-unit"> {{ sc_unit }}</span>
+                                              {%- endif -%}
+                                            </td>
+                                          {%- endif -%}
+                                        {%- endfor -%}
+                                      </tr>
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                {%- endfor -%}
+                              </tbody>
+                            </table>
+                          </div>
+
+                          {%- if block.settings.note != blank -%}
+                            <p class="psc-note">{{ block.settings.note }}</p>
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <style>
+                    .psc-block { margin-bottom: 1.6rem; }
+
+                    .psc-trigger {
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      width: 100%;
+                      background: none;
+                      border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+                      padding: 1.2rem 1.6rem;
+                      font-size: 1.4rem;
+                      font-family: inherit;
+                      color: inherit;
+                      cursor: pointer;
+                      text-align: left;
+                      letter-spacing: 0.05em;
+                      transition: border-color 0.2s;
+                    }
+                    .psc-trigger:hover {
+                      border-color: rgba(var(--color-foreground), 0.5);
+                    }
+                    .psc-trigger__caret svg {
+                      width: 1.4rem;
+                      height: 1.4rem;
+                      transition: transform 0.3s ease;
+                      display: block;
+                    }
+                    .psc-trigger[aria-expanded="true"] .psc-trigger__caret svg {
+                      transform: rotate(180deg);
+                    }
+
+                    .psc-panel {
+                      display: grid;
+                      grid-template-rows: 0fr;
+                      overflow: hidden;
+                      opacity: 0;
+                      transition: grid-template-rows 0.35s ease, opacity 0.3s ease;
+                    }
+                    .psc-panel.is-open {
+                      grid-template-rows: 1fr;
+                      opacity: 1;
+                    }
+                    .psc-panel__inner { min-height: 0; }
+
+                    .psc-card {
+                      background: #0d0d0d;
+                      color: #fff;
+                      padding: 2.8rem 2.4rem;
+                      margin-top: 0.4rem;
+                      box-sizing: border-box;
+                    }
+
+                    .psc-card__header {
+                      text-align: center;
+                      margin-bottom: 2rem;
+                    }
+                    .psc-logo {
+                      margin-bottom: 1.2rem;
+                    }
+                    .psc-logo__img {
+                      max-width: 10rem;
+                      height: auto;
+                      display: inline-block;
+                      filter: brightness(0) invert(1);
+                    }
+                    .psc-logo-text {
+                      font-size: 1.8rem;
+                      font-weight: 700;
+                      letter-spacing: 0.3em;
+                      text-transform: uppercase;
+                      color: #fff;
+                      margin: 0 0 1rem;
+                      font-family: var(--font-heading-family, Georgia, serif);
+                    }
+                    .psc-card__ornament {
+                      display: block;
+                      font-size: 1.2rem;
+                      color: rgba(255,255,255,0.4);
+                      letter-spacing: 0.4em;
+                      margin-bottom: 0.6rem;
+                    }
+                    .psc-card__title {
+                      font-size: 1.5rem;
+                      font-weight: 400;
+                      letter-spacing: 0.22em;
+                      text-transform: uppercase;
+                      color: #fff;
+                      margin: 0 0 1rem;
+                      font-family: var(--font-heading-family, Georgia, serif);
+                    }
+                    .psc-card__divider {
+                      display: block;
+                      width: 3rem;
+                      height: 0.1rem;
+                      background: rgba(255,255,255,0.25);
+                      margin: 0 auto;
+                    }
+
+                    .psc-table-wrap {
+                      overflow-x: auto;
+                      -webkit-overflow-scrolling: touch;
+                    }
+                    .psc-table {
+                      width: 100%;
+                      border-collapse: collapse;
+                      font-size: 1.3rem;
+                    }
+                    .psc-table thead th {
+                      background: #1a1a1a;
+                      color: rgba(255,255,255,0.85);
+                      font-weight: 400;
+                      letter-spacing: 0.12em;
+                      text-transform: uppercase;
+                      font-size: 1.1rem;
+                      padding: 1rem 1.4rem;
+                      border: 0.1rem solid rgba(255,255,255,0.1);
+                      text-align: center;
+                      white-space: nowrap;
+                    }
+                    .psc-table thead .psc-table__corner {
+                      background: transparent;
+                      border-color: transparent;
+                      color: rgba(255,255,255,0.35);
+                      font-size: 0.95rem;
+                    }
+                    .psc-table tbody th,
+                    .psc-table tbody td {
+                      padding: 1rem 1.4rem;
+                      border: 0.1rem solid rgba(255,255,255,0.1);
+                      text-align: center;
+                    }
+                    .psc-table tbody th {
+                      font-weight: 600;
+                      color: rgba(255,255,255,0.9);
+                      text-align: left;
+                      white-space: nowrap;
+                    }
+                    .psc-table tbody td {
+                      color: rgba(255,255,255,0.8);
+                      font-weight: 600;
+                      font-size: 1.4rem;
+                    }
+                    .psc-table tbody tr:hover td,
+                    .psc-table tbody tr:hover th {
+                      background: rgba(255,255,255,0.04);
+                    }
+                    .psc-unit {
+                      font-size: 0.95rem;
+                      font-weight: 400;
+                      color: rgba(255,255,255,0.38);
+                    }
+                    .psc-note {
+                      margin-top: 1.6rem;
+                      font-size: 1.1rem;
+                      color: rgba(255,255,255,0.4);
+                      text-align: center;
+                      letter-spacing: 0.04em;
+                      font-family: var(--font-body-family, sans-serif);
+                    }
+                  </style>
+
+                  <script>
+                    (function () {
+                      var btn = document.querySelector('[aria-controls="PscPanel-{{ block.id }}"]');
+                      var panel = document.getElementById('PscPanel-{{ block.id }}');
+                      if (!btn || !panel) return;
+                      btn.addEventListener('click', function () {
+                        var open = this.getAttribute('aria-expanded') === 'true';
+                        this.setAttribute('aria-expanded', String(!open));
+                        panel.classList.toggle('is-open', !open);
+                        panel.setAttribute('aria-hidden', String(open));
+                      });
+                    })();
+                  </script>
+                {%- endif -%}
+
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
@@ -2131,6 +2418,41 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "size_chart",
+      "name": "Size Chart",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Data comes from the product metafield **custom.size_chart**. First line = column headers, remaining lines = rows, values separated by |"
+        },
+        {
+          "type": "text",
+          "id": "trigger_label",
+          "label": "Button label",
+          "default": "Size Chart"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading inside chart",
+          "default": "Size Chart"
+        },
+        {
+          "type": "text",
+          "id": "unit_label",
+          "label": "Unit label",
+          "default": "kg",
+          "info": "Appended after each value. Leave blank to hide."
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Footer note"
         }
       ]
     },
