@@ -494,7 +494,7 @@
               {%- when 'size_chart' -%}
                 {%- liquid
                   assign sc_raw  = product.metafields.custom.size_chart.value
-                  assign sc_unit = block.settings.unit_label | default: 'kg'
+                  assign sc_unit = block.settings.unit_label
                 -%}
                 {%- if sc_raw != blank -%}
                   {%- assign sc_all_lines = sc_raw | strip | newline_to_br | split: '<br />' -%}
