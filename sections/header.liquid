@@ -33,6 +33,13 @@
     border-bottom-color: transparent !important;
   }
 
+  /* On the homepage, pull the first section up under the transparent header */
+  body.page-index #MainContent > .shopify-section:first-child {
+    margin-top: calc(var(--header-height, 0px) * -1);
+    position: relative;
+    z-index: 1;
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
@@ -328,6 +335,7 @@
     function initTransparentHeader() {
       var headerWrapper = document.querySelector('.header-wrapper');
       if (!headerWrapper) return;
+
       function update() {
         if (window.scrollY > 10) {
           headerWrapper.classList.add('header-scrolled');
@@ -335,9 +343,26 @@
           headerWrapper.classList.remove('header-scrolled');
         }
       }
+
       window.addEventListener('scroll', update, { passive: true });
       update();
+
+      /* On homepage, --header-height is set by StickyHeader after load.
+         Force a repaint once it's available so the negative margin kicks in. */
+      if (document.body.classList.contains('page-index')) {
+        var sectionHeader = document.querySelector('.section-header');
+        if (sectionHeader) {
+          var h = sectionHeader.offsetHeight;
+          document.documentElement.style.setProperty('--header-height', h + 'px');
+        }
+        /* Also re-check after fonts/images settle */
+        window.addEventListener('load', function () {
+          var sh = document.querySelector('.section-header');
+          if (sh) document.documentElement.style.setProperty('--header-height', sh.offsetHeight + 'px');
+        });
+      }
     }
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initTransparentHeader);
     } else {
