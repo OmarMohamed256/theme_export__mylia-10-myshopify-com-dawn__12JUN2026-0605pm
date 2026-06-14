@@ -58,8 +58,8 @@
         "collapsible_tab_yihaTJ": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Collapsible row",
-            "icon": "check_mark",
+            "heading": "Return Policy",
+            "icon": "return",
             "content": "",
             "page": ""
           }
