@@ -205,6 +205,34 @@
         "padding_bottom": 36
       }
     },
+    "featured_collection_6BycLw": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "blouses",
+        "products_to_show": 15,
+        "title": "Blouses",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "outline",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
     "collection_list_TJR7jr": {
       "type": "collection-list",
       "blocks": {
@@ -313,6 +341,7 @@
   "order": [
     "slideshow_8VHDbq",
     "featured_collection",
+    "featured_collection_6BycLw",
     "featured_collection_hAVctt",
     "featured_collection_kp7rpR",
     "featured_collection_xnCPhB",
