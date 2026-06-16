@@ -14,6 +14,8 @@
   assign swatch_color = product.metafields.custom.swatch_color.value
 -%}
 
+<!-- DEBUG: swatch_color={{ swatch_color }} | siblings_count={{ siblings.size }} -->
+
 {%- if siblings != blank or swatch_color != blank -%}
   <div class="product-color-swatches">
     {%- comment -%} Show the current product's own swatch first {%- endcomment -%}
