@@ -14,8 +14,6 @@
   assign swatch_color = product.metafields.custom.swatch_color.value
 -%}
 
-<!-- DEBUG: swatch_color={{ swatch_color }} | siblings_count={{ siblings.size }} -->
-
 {%- if siblings != blank or swatch_color != blank -%}
   <div class="product-color-swatches">
     {%- comment -%} Show the current product's own swatch first {%- endcomment -%}
@@ -26,7 +24,7 @@
         style="background-color: {{ swatch_color }};"
         title="{{ product.title | escape }}"
         aria-label="{{ product.title | escape }}"
-      ></a>
+      >&nbsp;</a>
     {%- endif -%}
 
     {%- comment -%} Show sibling product swatches {%- endcomment -%}
@@ -38,7 +36,7 @@
         style="background-color: {{ sibling_color | default: '#ccc' }};"
         title="{{ sibling.title | escape }}"
         aria-label="{{ sibling.title | escape }}"
-      ></a>
+      >&nbsp;</a>
     {%- endfor -%}
   </div>
 {%- endif -%}
@@ -47,24 +45,24 @@
   .product-color-swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
+    gap: 8px;
+    margin-top: 12px;
+    margin-bottom: 8px;
   }
 
   .product-color-swatch {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    border: 2px solid transparent;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
-    transition: box-shadow 0.2s, border-color 0.2s;
+    border: 3px solid #fff;
+    outline: 1px solid rgba(0,0,0,0.25);
+    transition: outline 0.2s;
     flex-shrink: 0;
   }
 
   .product-color-swatch:hover,
   .product-color-swatch--active {
-    border-color: #000;
-    box-shadow: 0 0 0 1px #000;
+    outline: 2px solid #000;
   }
 </style>
