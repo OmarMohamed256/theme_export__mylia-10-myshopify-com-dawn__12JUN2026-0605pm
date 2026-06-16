@@ -34,7 +34,7 @@
         "product_note": {
           "type": "product_note",
           "settings": {
-            "label": "Add a note",
+            "label": "Add a note (If you need a custom size, please write it here)",
             "placeholder": "Any special requests or notes for this item…",
             "rows": 3
           }
