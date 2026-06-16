@@ -104,6 +104,7 @@
                       {{ product.title | escape }}
                     </h2>
                   </a>
+                  {% render 'product-color-swatches', product: product, current_product_id: product.id %}
                 </div>
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>

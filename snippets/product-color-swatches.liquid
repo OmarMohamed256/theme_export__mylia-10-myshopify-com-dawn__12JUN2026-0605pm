@@ -1,0 +1,68 @@
+{%- comment -%}
+  Renders cross-product color swatches linked to sibling products.
+
+  Accepts:
+  - product: {Object} The product to render swatches for
+  - current_product_id: {Number} ID of the currently viewed product (to mark active swatch)
+
+  Usage:
+  {% render 'product-color-swatches', product: card_product, current_product_id: card_product.id %}
+{%- endcomment -%}
+
+{%- liquid
+  assign siblings = product.metafields.custom.color_siblings.value
+  assign swatch_color = product.metafields.custom.swatch_color.value
+-%}
+
+{%- if siblings != blank or swatch_color != blank -%}
+  <div class="product-color-swatches">
+    {%- comment -%} Show the current product's own swatch first {%- endcomment -%}
+    {%- if swatch_color != blank -%}
+      <a
+        href="{{ product.url }}"
+        class="product-color-swatch{% if product.id == current_product_id %} product-color-swatch--active{% endif %}"
+        style="background-color: {{ swatch_color }};"
+        title="{{ product.title | escape }}"
+        aria-label="{{ product.title | escape }}"
+      ></a>
+    {%- endif -%}
+
+    {%- comment -%} Show sibling product swatches {%- endcomment -%}
+    {%- for sibling in siblings -%}
+      {%- assign sibling_color = sibling.metafields.custom.swatch_color.value -%}
+      <a
+        href="{{ sibling.url }}"
+        class="product-color-swatch{% if sibling.id == current_product_id %} product-color-swatch--active{% endif %}"
+        style="background-color: {{ sibling_color | default: '#ccc' }};"
+        title="{{ sibling.title | escape }}"
+        aria-label="{{ sibling.title | escape }}"
+      ></a>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+<style>
+  .product-color-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .product-color-swatch {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .product-color-swatch:hover,
+  .product-color-swatch--active {
+    border-color: #000;
+    box-shadow: 0 0 0 1px #000;
+  }
+</style>
