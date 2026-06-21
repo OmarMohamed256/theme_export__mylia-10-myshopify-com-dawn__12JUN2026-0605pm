@@ -334,6 +334,12 @@
             "collection": "kimonos"
           }
         },
+        "featured_collection_K9fHGt": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "evening-wear"
+          }
+        },
         "featured_collection_UatfND": {
           "type": "featured_collection",
           "settings": {
@@ -349,6 +355,7 @@
         "featured_collection_iKTxNk",
         "featured_collection_FUN49R",
         "featured_collection_UDaUxK",
+        "featured_collection_K9fHGt",
         "featured_collection_UatfND"
       ],
       "name": "t:sections.collection-list.presets.name",
