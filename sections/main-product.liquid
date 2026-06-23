@@ -780,6 +780,9 @@
                 {%- endif -%}
 
               {%- when 'color_swatches' -%}
+                {%- if block.settings.label != blank -%}
+                  <label class="form__label">{{ block.settings.label }}</label>
+                {%- endif -%}
                 {% render 'product-color-swatches', product: product, current_product_id: product.id %}
 
               {%- when 'buy_buttons' -%}
@@ -1249,7 +1252,14 @@
       "type": "color_swatches",
       "name": "Color Swatches",
       "limit": 1,
-      "settings": []
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Color"
+        }
+      ]
     },
     {
       "type": "buy_buttons",
