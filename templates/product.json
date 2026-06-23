@@ -31,6 +31,10 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "color_swatches": {
+          "type": "color_swatches",
+          "settings": {}
+        },
         "product_note": {
           "type": "product_note",
           "settings": {
@@ -80,6 +84,7 @@
         "price",
         "variant_picker",
         "quantity_selector",
+        "color_swatches",
         "product_note",
         "buy_buttons",
         "size_chart_hqxp3K",

@@ -779,8 +779,10 @@
                   </script>
                 {%- endif -%}
 
-              {%- when 'buy_buttons' -%}
+              {%- when 'color_swatches' -%}
                 {% render 'product-color-swatches', product: product, current_product_id: product.id %}
+
+              {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
                   product: product,
@@ -1242,6 +1244,12 @@
           "default": "circle"
         }
       ]
+    },
+    {
+      "type": "color_swatches",
+      "name": "Color Swatches",
+      "limit": 1,
+      "settings": []
     },
     {
       "type": "buy_buttons",
