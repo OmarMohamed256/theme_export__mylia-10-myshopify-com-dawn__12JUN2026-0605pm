@@ -27,12 +27,14 @@
             "swatch_shape": "circle"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
         "color_swatches_7HbW7i": {
           "type": "color_swatches",
+          "settings": {
+            "label": "Color"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
           "settings": {}
         },
         "product_note": {
@@ -83,8 +85,8 @@
         "title",
         "price",
         "variant_picker",
-        "quantity_selector",
         "color_swatches_7HbW7i",
+        "quantity_selector",
         "product_note",
         "buy_buttons",
         "size_chart_hqxp3K",
