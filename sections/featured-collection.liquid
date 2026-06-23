@@ -26,20 +26,21 @@
 
 {%- style -%}
   @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .slider--tablet.grid--peek .grid__item,
-    #shopify-section-{{ section.id }} .slider--tablet.grid--peek.grid--2-col-tablet-down .grid__item,
-    #shopify-section-{{ section.id }} .grid--peek .grid__item {
+    #shopify-section-{{ section.id }} .grid.product-grid {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      gap: 4px;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .grid.product-grid .grid__item {
+      flex: 0 0 calc(40% - 2px);
       width: calc(40% - 2px);
-      min-width: unset;
-    }
-
-    #shopify-section-{{ section.id }} .grid.slider {
-      gap: 1px;
-    }
-
-    #shopify-section-{{ section.id }} .grid__item:first-of-type,
-    #shopify-section-{{ section.id }} .slider--tablet.grid--peek .grid__item:first-of-type {
-      margin-left: 8px;
+      max-width: calc(40% - 2px);
+      scroll-snap-align: start;
     }
 
     #shopify-section-{{ section.id }} .slider-button {
