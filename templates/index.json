@@ -375,7 +375,7 @@
     "featured_collection_MtmbzH": {
       "type": "featured-collection",
       "settings": {
-        "collection": "new-arrivals",
+        "collection": "new-arrival",
         "products_to_show": 15,
         "title": "New Arrivals",
         "heading_size": "h2",
@@ -403,6 +403,7 @@
   },
   "order": [
     "slideshow_8VHDbq",
+    "featured_collection_MtmbzH",
     "featured_collection",
     "featured_collection_VX6BwF",
     "featured_collection_6BycLw",
@@ -411,7 +412,6 @@
     "featured_collection_kp7rpR",
     "featured_collection_xnCPhB",
     "featured_collection_hKx6jP",
-    "collection_list_TJR7jr",
-    "featured_collection_MtmbzH"
+    "collection_list_TJR7jr"
   ]
 }
