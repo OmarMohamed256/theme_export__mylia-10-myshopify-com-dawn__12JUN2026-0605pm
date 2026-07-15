@@ -15,7 +15,7 @@
         "slide_iQxMkJ": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/download_02344173-9977-42df-a5a3-327f450e581d.jpg",
+            "image": "shopify://shop_images/D83B9346-1CA8-42E4-AE32-2177F6D76B17.jpg",
             "image_overlay_opacity": 0,
             "heading": "",
             "heading_size": "h1",
@@ -63,6 +63,34 @@
         "image_behavior": "none",
         "show_text_below": false,
         "accessibility_info": "Slideshow about our brand"
+      }
+    },
+    "featured_collection_MtmbzH": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "new-arrival",
+        "products_to_show": 15,
+        "title": "New Arrivals",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "outline",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 44,
+        "padding_bottom": 36
       }
     },
     "featured_collection": {
@@ -369,34 +397,6 @@
         "columns_mobile": "2",
         "swipe_on_mobile": false,
         "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "featured_collection_MtmbzH": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "new-arrival",
-        "products_to_show": 15,
-        "title": "New Arrivals",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": true,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "outline",
-        "color_scheme": "scheme-1",
-        "image_ratio": "portrait",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "standard",
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 44,
         "padding_bottom": 36
       }
     }
