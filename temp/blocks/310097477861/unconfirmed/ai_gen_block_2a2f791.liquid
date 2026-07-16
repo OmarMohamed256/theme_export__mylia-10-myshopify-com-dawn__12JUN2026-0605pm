@@ -1,6 +1,236 @@
+{% doc %}
+  @prompt
+    Prompt:
+    
+    Create a Shopify Liquid section called "Need Help?" — a lightweight contact CTA block. Keep it minimal: no forms, no heavy assets, no extra content beyond what's specified.
+    Content:
+    
+    Eyebrow/heading: Questions, Complaints & Special Requests
+    Subheading: Need help?
+    Body: For any questions, complaints, or special requests, send us a DM on Instagram — we're here to help and will reply as soon as possible.
+    Button: Message us on Instagram (links to a schema-editable URL)
+    
+    Design:
+    
+    Centered, single-column, generous padding, max-width ~640px
+    Small Instagram icon (inline SVG, no external requests)
+    Inherits theme fonts and colors via CSS variables; no hardcoded brand colors
+    Subtle background tint + rounded corners; hover state on the button
+    Fully responsive, mobile-first
+    
+    Schema settings: heading, subheading, body text, button label, Instagram URL, background color, text color, top/bottom padding.
+    Output: a single sections/need-help.liquid file with scoped CSS in a {% stylesheet %} block (or scoped <style>), valid {% schema %} JSON including presets, and no JavaScript.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-need-help-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.padding_top }}px 20px {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-need-help-container-{{ ai_gen_id }} {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    padding: 48px 32px;
+    border-radius: 12px;
+  }
+
+  .ai-need-help-eyebrow-{{ ai_gen_id }} {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 12px;
+    opacity: 0.8;
+  }
+
+  .ai-need-help-heading-{{ ai_gen_id }} {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+
+  .ai-need-help-body-{{ ai_gen_id }} {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 32px;
+    opacity: 0.9;
+  }
+
+  .ai-need-help-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background-color: {{ block.settings.text_color }};
+    color: {{ block.settings.background_color }};
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .ai-need-help-button-{{ ai_gen_id }}:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .ai-need-help-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-need-help-container-{{ ai_gen_id }} {
+      padding: 32px 24px;
+    }
+
+    .ai-need-help-heading-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+
+    .ai-need-help-body-{{ ai_gen_id }} {
+      font-size: 14px;
+    }
+
+    .ai-need-help-button-{{ ai_gen_id }} {
+      font-size: 14px;
+      padding: 12px 24px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-need-help-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-need-help-container-{{ ai_gen_id }}">
+    {% if block.settings.eyebrow != blank %}
+      <div class="ai-need-help-eyebrow-{{ ai_gen_id }}">
+        {{ block.settings.eyebrow }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-need-help-heading-{{ ai_gen_id }}">
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.body != blank %}
+      <div class="ai-need-help-body-{{ ai_gen_id }}">
+        {{ block.settings.body }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.instagram_url != blank %}
+      <a href="{{ block.settings.instagram_url }}" class="ai-need-help-button-{{ ai_gen_id }}" target="_blank" rel="noopener noreferrer">
+        <svg class="ai-need-help-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z" fill="currentColor"/>
+        </svg>
+        {{ block.settings.button_label }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Need help?",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Questions, Complaints & Special Requests"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Need help?"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>For any questions, complaints, or special requests, send us a DM on Instagram — we're here to help and will reply as soon as possible.</p>"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Message us on Instagram"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Need help?"
+    }
+  ],
+  "tag": null
+}
 {% endschema %}
