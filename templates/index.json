@@ -15,10 +15,10 @@
         "slide_iQxMkJ": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/7A2F203D-D1D3-4667-AE38-3C6C09FAFD1E.jpg",
+            "image": "shopify://shop_images/D83B9346-1CA8-42E4-AE32-2177F6D76B17.jpg",
             "image_overlay_opacity": 0,
-            "heading": "UP TO 50% OFF",
-            "heading_size": "h0",
+            "heading": "",
+            "heading_size": "h1",
             "subheading": "",
             "button_label": "Shop Now",
             "link": "shopify://collections/best-seller",
@@ -33,10 +33,10 @@
         "slide_xEz8Y7": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/download_c0095ef3-9a20-4aa4-95a9-717b04dd19b5.jpg",
+            "image": "shopify://shop_images/CE45D885-9331-4727-B4F0-5C48760031E0.png",
             "image_overlay_opacity": 0,
-            "heading": "UP TO 50% OFF",
-            "heading_size": "h0",
+            "heading": "",
+            "heading_size": "h1",
             "subheading": "",
             "button_label": "Shop Now",
             "link": "shopify://collections/dresses",
